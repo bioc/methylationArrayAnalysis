@@ -628,6 +628,12 @@ Sample size is an important consideration when testing for differentially variab
 ```{r agedata}
 load(file.path(dataDirectory,"ageData.RData"))
 
+# reduce the size of the dataset
+set.seed(100)
+keep <- c(sample(1:19,10),sample(20:38,10))
+age.targets <- age.targets[keep,]
+age.rgSet <- age.rgSet[,keep]
+
 # calculate detection p-values
 age.detP <- detectionP(age.rgSet)
 

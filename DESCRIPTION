@@ -10,9 +10,7 @@ Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
 biocViews: Workflows
-Suggests: knitr, 
-    rmarkdown,
-    BiocStyle,
+Suggests: knitr, rmarkdown, BiocStyle,
     limma,
     minfi,
     IlluminaHumanMethylation450kanno.ilmn12.hg19,
