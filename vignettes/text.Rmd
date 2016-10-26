@@ -728,6 +728,18 @@ An example of testing for differential variability when the design matrix does n
 
 As methylation is cell type specific and methylation arrays provide CpG methylation values for a population of cells, biological findings from samples that are comprised of a mixture of cell types, such as blood, can be confounded with cell type composition [@Jaffe2014]. The *minfi* function `estimateCellCounts` facilitates the estimation of the level of confounding between phenotype and cell type composition in a set of samples. The function uses a modified version of the method published by @Houseman2012 and the package `FlowSorted.Blood.450k`, which contains 450k methylation data from sorted blood cells, to estimate the cell type composition of blood samples. 
 
+```{r, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
+# reduce the size of the dataset
+#set.seed(100)
+#keep <- c(sample(1:19,10),sample(20:38,10))
+#age.targets <- age.targets[keep,]
+#age.rgSet <- age.rgSet[,keep]
+
+allObs = ls()
+rm(list = allObs[!(allObs %in% c("age.targets","age.rgSet","age.pal"))])
+gc()
+```
+
 ```{r cellcounts}
 # load sorted blood cell data package
 library(FlowSorted.Blood.450k)
