@@ -1,4 +1,4 @@
-Package: methylationArrays
+Package: methylationArrayAnalysis
 Title: Dummy Package
 Version: 0.0.1
 Authors@R: person(role=c("aut", "cre"), "Bioconductor Package",

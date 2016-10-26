@@ -62,7 +62,7 @@ Once the data has been downloaded and extracted, there should be a folder called
 
 ```{r datadir}
 # set up a path to the data directory
-dataDirectory <- system.file("extdata", package = "methylationArrays")
+dataDirectory <- system.file("extdata", package = "methylationArrayAnalysis")
 # list the files
 list.files(dataDirectory, recursive = TRUE)
 ```
@@ -730,10 +730,10 @@ As methylation is cell type specific and methylation arrays provide CpG methylat
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
 # reduce the size of the dataset
-#set.seed(100)
-#keep <- c(sample(1:19,10),sample(20:38,10))
-#age.targets <- age.targets[keep,]
-#age.rgSet <- age.rgSet[,keep]
+set.seed(100)
+keep <- c(sample(1:19,5),sample(20:38,5))
+age.targets <- age.targets[keep,]
+age.rgSet <- age.rgSet[,keep]
 
 allObs = ls()
 rm(list = allObs[!(allObs %in% c("age.targets","age.rgSet","age.pal"))])
