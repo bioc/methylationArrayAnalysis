@@ -730,17 +730,17 @@ As methylation is cell type specific and methylation arrays provide CpG methylat
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
 # reduce the size of the dataset
-set.seed(100)
-keep <- c(sample(1:19,5),sample(20:38,5))
-age.targets <- age.targets[keep,]
-age.rgSet <- age.rgSet[,keep]
+# set.seed(100)
+# keep <- c(sample(1:19,5),sample(20:38,5))
+# age.targets <- age.targets[keep,]
+# age.rgSet <- age.rgSet[,keep]
 
 allObs = ls()
-rm(list = allObs[!(allObs %in% c("age.targets","age.rgSet","age.pal"))])
+rm(list = allObs[!(allObs %in% c("dataDirectory","age.targets","age.rgSet","age.pal"))])
 gc()
 ```
 
-```{r cellcounts}
+```{r cellcounts, eval=FALSE}
 # load sorted blood cell data package
 library(FlowSorted.Blood.450k)
 # ensure that the "Slide" column of the rgSet pheno data is numeric
@@ -750,7 +750,7 @@ pData(age.rgSet)$Slide <- as.numeric(pData(age.rgSet)$Slide)
 cellCounts <- estimateCellCounts(age.rgSet)
 ```
 
-```{r figure15, fig.width=5,fig.height=5, cache=TRUE, fig.cap="If samples come from a population of mixed cells e.g. blood, it is advisable to check for potential confounding between differences in cell type proportions and the factor of interest."}
+```{r figure15, fig.width=5,fig.height=5, cache=TRUE, fig.cap="If samples come from a population of mixed cells e.g. blood, it is advisable to check for potential confounding between differences in cell type proportions and the factor of interest.", eval=FALSE}
 # plot cell type proportions by age
 par(mfrow=c(1,1))
 a = cellCounts[age.targets$Sample_Group == "NewBorns",]
@@ -761,6 +761,7 @@ boxplot(b, at=0:5*3 + 2, xaxt="n", add=TRUE, col=age.pal[2])
 axis(1, at=0:5*3 + 1.5, labels=colnames(a), tick=TRUE)
 legend("topleft", legend=c("NewBorns","OLD"), fill=age.pal)
 ```
+![Figure15: If samples come from a population of mixed cells e.g. blood, it is advisable to check for potential confounding between differences in cell type proportions and the factor of interest.](figure15.png)
 *Figure 15: If samples come from a population of mixed cells e.g. blood, it is advisable to check for potential confounding between differences in cell type proportions and the factor of interest.*
 
 As reported by @Jaffe2014, the preceding plot demonstrates that differences in blood cell type proportions are strongly confounded with age in this dataset (Figure 15). Performing cell composition estimation can alert you to potential issues with confounding when analysing a mixed cell type dataset. Based on the results, some type of adjustment for cell type composition may be considered, although a naive cell type adjustment is not recommended. @Jaffe2014 outline several strategies for dealing with cell type composition issues. 
