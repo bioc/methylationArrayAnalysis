@@ -1,6 +1,5 @@
 Package: methylationArrayAnalysis
-Title: A cross-package Bioconductor workflow for analysing methylation array
-data
+Title: A cross-package Bioconductor workflow for analysing methylation array data.
 Version: 0.0.1
 Authors@R: person(role=c("aut", "cre"), "Bioconductor Package",
         "Maintainer", email = "maintainer@bioconductor.org")
