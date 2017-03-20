@@ -420,10 +420,10 @@ Although performing a *probe-wise* analysis is useful and informative, sometimes
 Firstly, our matrix of M-values is annotated with the relevant information about the probes such as their genomic position, gene annotation, etc. By default, this is done using the `ilmn12.hg19` annotation, but this can be substituted for any argument compatible with the interface provided by the *minfi* package. The *limma* pipeline is then used for differential methylation analysis to calculate moderated t-statistics.
 
 ```{r cpgannotate}
-myAnnotation <- cpg.annotate(mVals, datatype = "array", 
-                             analysis.type="differential", design=design, 
+myAnnotation <- cpg.annotate(object = mVals, datatype = "array", what = "M", 
+                             analysis.type = "differential", design = design, 
                              contrasts = TRUE, cont.matrix = contMatrix, 
-                             coef="naive - rTreg")
+                             coef = "naive - rTreg", arraytype = "450K")
 str(myAnnotation)
 ```
 
@@ -466,7 +466,7 @@ We will first set up the genomic region we would like to plot by extracting the 
 # indicate which genome is being used
 gen <- "hg19"
 # the index of the DMR that we will plot 
-dmrIndex <- 37
+dmrIndex <- 1
 # extract chromosome number and location from DMR results 
 coords <- strsplit2(DMRs$results$coord[dmrIndex],":")
 chrom <- coords[1]
@@ -482,7 +482,7 @@ Next, we will add some genomic annotations of interest such as the locations of 
 ```{r extrafeatures}
 # CpG islands
 islandHMM <- read.csv(paste(dataDirectory,
-                            "model-based-cpg-islands-hg19-chr22.txt", sep="/"),
+                            "model-based-cpg-islands-hg19-chr17.txt", sep="/"),
                      sep="\t", stringsAsFactors=FALSE, header=FALSE)
 head(islandHMM)
 
@@ -492,7 +492,7 @@ islandData <- GRanges(seqnames=Rle(islandHMM[,1]),
 islandData
 
 # DNAseI hypersensitive sites
-dnase <- read.csv(paste(dataDirectory,"wgEncodeRegDnaseClusteredV3chr22.bed",
+dnase <- read.csv(paste(dataDirectory,"wgEncodeRegDnaseClusteredV3chr17.bed",
                         sep="/"),
                   sep="\t",stringsAsFactors=FALSE,header=FALSE)
 head(dnase)
