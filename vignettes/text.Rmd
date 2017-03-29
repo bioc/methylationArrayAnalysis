@@ -451,8 +451,9 @@ samps <- 1:nrow(targets)
 ```{r figure10, fig.width=10, fig.height=10, fig.cap="The DMRcate \"DMR.plot\" function allows you to quickly visualise DMRs in their genomic context. By default, the plot shows the location of the DMR in the genome, the position of any genes that are nearby, the base pair positions of the CpG probes, the methylation levels of the individual samples as a heatmap and the mean methylation levels for the various sample groups in the experiment. This plot shows the top ranked DMR identified by the DMRcate analysis."}
 # draw the plot for the top DMR
 par(mfrow=c(1,1))
-DMR.plot(ranges=results.ranges, dmr=1, CpGs=bVals, phen.col=cols,
-         pch=16, toscale=TRUE, plotmedians=TRUE, genome="hg19", samps=samps)
+DMR.plot(ranges=results.ranges, dmr=1, CpGs=bVals, phen.col=cols, what = "Beta",
+         arraytype = "450K", pch=16, toscale=TRUE, plotmedians=TRUE, 
+         genome="hg19", samps=samps)
 ```
 *Figure 10: The DMRcate `DMR.plot` function allows you to quickly visualise DMRs in their genomic context. By default, the plot shows the location of the DMR in the genome, the position of any genes that are nearby, the base pair positions of the CpG probes, the methylation levels of the individual samples as a heatmap and the mean methylation levels for the various sample groups in the experiment. This plot shows the top ranked DMR identified by the DMRcate analysis.*
 
