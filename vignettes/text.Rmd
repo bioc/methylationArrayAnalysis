@@ -506,7 +506,7 @@ dnaseData
 ```
 
 Now, set up the ideogram, genome and RefSeq tracks that will provide context for our methylation data. 
-```{r gentracks}
+```{r gentracks, eval=FALSE}
 iTrack <- IdeogramTrack(genome = gen, chromosome = chrom, name="")
 gTrack <- GenomeAxisTrack(col="black", cex=1, name="", fontcolor="black")
 rTrack <- UcscTrack(genome=gen, chromosome=chrom, track="refGene", 
@@ -557,13 +557,14 @@ dmrTrack <- AnnotationTrack(start=start, end=end, genome=gen, name="DMR",
 
 Set up the track list and indicate the relative sizes of the different tracks. Finally, draw the plot using the `plotTracks` function (Figure 11).
 
-```{r figure11, fig.width=10, fig.height=6, fig.cap="The Gviz package provides extensive functionality for customising plots of genomic regions. This plot shows the top ranked DMR identified by the DMRcate analysis."}
+```{r figure11, fig.width=10, fig.height=6, fig.cap="The Gviz package provides extensive functionality for customising plots of genomic regions. This plot shows the top ranked DMR identified by the DMRcate analysis.", eval=FALSE}
 tracks <- list(iTrack, gTrack, methTrack, dmrTrack, islandTrack, dnaseTrack,
                rTrack)
 sizes <- c(2,2,5,2,2,2,3) # set up the relative sizes of the tracks
 plotTracks(tracks, from=minbase, to=maxbase, showTitle=TRUE, add53=TRUE, 
            add35=TRUE, grid=TRUE, lty.grid=3, sizes=sizes, length(tracks))
 ```
+![Figure15: The Gviz package provides extensive functionality for customising plots of genomic regions. This plot shows the top ranked DMR identified by the DMRcate analysis.](figure11.png)
 *Figure 11: The Gviz package provides extensive functionality for customising plots of genomic regions. This plot shows the top ranked DMR identified by the DMRcate analysis.*
 
 # Additional analyses
