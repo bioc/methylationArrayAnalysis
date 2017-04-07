@@ -482,9 +482,9 @@ Next, we will add some genomic annotations of interest such as the locations of 
 
 ```{r extrafeatures}
 # CpG islands
-islandHMM <- read.csv(paste(dataDirectory,
-                            "model-based-cpg-islands-hg19-chr17.txt", sep="/"),
-                     sep="\t", stringsAsFactors=FALSE, header=FALSE)
+islandHMM <- read.csv(paste0(dataDirectory,
+                             "/model-based-cpg-islands-hg19-chr17.txt"),
+                      sep="\t", stringsAsFactors=FALSE, header=FALSE)
 head(islandHMM)
 
 islandData <- GRanges(seqnames=Rle(islandHMM[,1]), 
@@ -493,8 +493,7 @@ islandData <- GRanges(seqnames=Rle(islandHMM[,1]),
 islandData
 
 # DNAseI hypersensitive sites
-dnase <- read.csv(paste(dataDirectory,"wgEncodeRegDnaseClusteredV3chr17.bed",
-                        sep="/"),
+dnase <- read.csv(paste0(dataDirectory,"/wgEncodeRegDnaseClusteredV3chr17.bed"),
                   sep="\t",stringsAsFactors=FALSE,header=FALSE)
 head(dnase)
 
