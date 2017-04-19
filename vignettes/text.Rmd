@@ -1,8 +1,8 @@
 ---
 title: "A cross-package Bioconductor workflow for analysing methylation array data"
 author: "Jovana Maksimovic, Belinda Phipson and Alicia Oshlack"
-date: "`r doc_date()`"
-output:
+date: "`r BiocStyle::doc_date()`"
+output: >
   BiocStyle::html_document:
   pdf_document:
     fig_caption: yes
