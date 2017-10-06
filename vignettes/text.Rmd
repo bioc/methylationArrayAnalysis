@@ -21,7 +21,7 @@ link-citations: true
 knitr::opts_chunk$set(echo=TRUE)
 ```
 
-```{r libload, results="hide", echo=FALSE, message=FALSE, warning=FALSE, eval=FALSE}
+```{r libload, results="hide", echo=FALSE, message=FALSE, warning=FALSE}
 library(limma)
 library(minfi)
 library(IlluminaHumanMethylation450kanno.ilmn12.hg19)
@@ -33,10 +33,6 @@ library(minfiData)
 library(Gviz)
 library(DMRcate)
 library(stringr)
-```
-
-```{r}
-library("methylationArrayAnalysis")
 ```
 
 # Abstract
