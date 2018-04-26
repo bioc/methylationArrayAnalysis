@@ -1,6 +1,6 @@
 Package: methylationArrayAnalysis
 Title: A cross-package Bioconductor workflow for analysing methylation array data.
-Version: 1.1.1
+Version: 1.1.2
 Authors@R: person(role=c("aut", "cre"), "Jovana Maksimovic",
         "Maintainer", email = "jovana.maksimovic@mcri.edu.au")
 Description: Methylation in the human genome is known to be associated with 

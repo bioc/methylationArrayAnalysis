@@ -1,6 +1,10 @@
 ---
 title: "A cross-package Bioconductor workflow for analysing methylation array data"
-author: "Jovana Maksimovic, Belinda Phipson and Alicia Oshlack"
+author: 
+  - name: Jovana Maksimovic
+    email: jovana.maksimovic@mcri.edu.au
+  - name: Belinda Phipson 
+  - name: Alicia Oshlack
 date: "`r BiocStyle::doc_date()`"
 output: 
   BiocStyle::html_document:
@@ -15,6 +19,19 @@ vignette: >
   %\VignetteEncoding{UTF-8} 
 bibliography: bibliography.bib
 link-citations: true
+abstract: |
+  Methylation in the human genome is known to be associated with development and
+  disease. The Illumina Infinium methylation arrays are by far the most common
+  way to interrogate methylation across the human genome. This paper provides a
+  Bioconductor workflow using multiple packages for the analysis of methylation
+  array data. Specifically, we demonstrate the steps involved in a typical
+  differential methylation analysis pipeline including: quality control,
+  filtering, normalization, data exploration and statistical testing for
+  probe-wise differential methylation. We further outline other analyses such as
+  differential methylation of regions, differential variability analysis,
+  estimating cell type composition and gene ontology testing. Finally, we
+  provide some examples of how to visualise methylation array data.
+
 ---
 
 ```{r setup, include=FALSE}
@@ -35,9 +52,12 @@ library(DMRcate)
 library(stringr)
 ```
 
-# Abstract
+**R version**: `r R.version.string`
 
-Methylation in the human genome is known to be associated with development and disease. The Illumina Infinium methylation arrays are by far the most common way to interrogate methylation across the human genome. This paper provides a Bioconductor workflow using multiple packages for the analysis of methylation array data. Specifically, we demonstrate the steps involved in a typical differential methylation analysis pipeline including: quality control, filtering, normalization, data exploration and statistical testing for probe-wise differential methylation. We further outline other analyses such as differential methylation of regions, differential variability analysis, estimating cell type composition and gene ontology testing. Finally, we provide some examples of how to visualise methylation array data.
+**Bioconductor version**: `r BiocInstaller::biocVersion()`
+
+**Package**: `r packageVersion("methylationArrayAnalysis")`
+
 
 # Introduction
 
