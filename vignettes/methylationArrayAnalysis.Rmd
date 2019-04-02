@@ -599,7 +599,7 @@ length(all)
 
 The `gometh` function takes into account the varying numbers of CpGs associated with each gene on the Illumina methylation arrays. For the 450k array, the numbers of CpGs mapping to genes can vary from as few as 1 to as many as 1200. The genes that have more CpGs associated with them will have a higher probability of being identified as differentially methylated compared to genes with fewer CpGs. We can look at this bias in the data by specifying `plot=TRUE` in the call to `gometh` (Figure 12).
 
-```{r figure12, fig.width=5, fig.height=5, fig.cap="Bias resulting from different numbers of CpG probes in different genes."}
+```{r figure12, fig.cap="Bias resulting from different numbers of CpG probes in different genes."}
 par(mfrow=c(1,1))
 gst <- gometh(sig.cpg=sigCpGs, all.cpg=all, plot.bias=TRUE)
 ```
