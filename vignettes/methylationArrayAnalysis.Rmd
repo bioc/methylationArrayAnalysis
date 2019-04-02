@@ -39,13 +39,13 @@ knitr::opts_chunk$set(echo=TRUE)
 ```
 
 ```{r libload, results="hide", echo=FALSE, message=FALSE, warning=FALSE}
+library(knitr)
 library(limma)
 library(minfi)
 library(IlluminaHumanMethylation450kanno.ilmn12.hg19)
 library(IlluminaHumanMethylation450kmanifest)
 library(RColorBrewer)
 library(missMethyl)
-#library(matrixStats)
 library(minfiData)
 library(Gviz)
 library(DMRcate)
@@ -65,7 +65,7 @@ DNA methylation, the addition of a methyl group to a CG dinucleotide of the DNA,
 
 Measurement of DNA methylation by Infinium technology (Infinium I) was first employed by Illumina on the HumanMethylation27 (27k) array [@Bibikova2009], which measured methylation at approximately 27,000 CpGs, primarily in gene promoters. Like bisulfite sequencing, the Infinium assay detects methylation status at single base resolution. However, due to its relatively limited coverage the array platform was not truly considered "genome-wide" until the arrival of the 450k array. The 450k array increased the genomic coverage of the platform to over 450,000 gene-centric sites by combining the original Infinium I assay with the novel Infinium II probes. Both assay types employ 50bp probes that query a [C/T] polymorphism created by bisulfite conversion of unmethylated cytosines in the genome, however, the Infinium I and II assays differ in the number of beads required to detect methylation at a single locus. Infinium I uses two bead types per CpG, one for each of the methylated and unmethylated states (Figure 1a). In contrast, the Infinium II design uses one bead type and the methylated state is determined at the single base extension step after hybridization (Figure 1b). The 850k array also uses a combination of the Infinium I and II assays but achieves additional coverage by increasing the size of each array; a 450k slide contains 12 arrays whilst the 850k has only 8. 
 
-```{r probeTypeFig, fig.cap="Illumina Infinium HumanMethylation450 assay, reproduced from Maksimovic, Gordon and Oshlack 2012. (a) Infinium I assay. Each individual CpG is interrogated using two bead types: methylated (M) and unmethylated (U). Both bead types will incorporate the same labeled nucleotide for the same target CpG, thereby producing the same color fluorescence. The nucleotide that is added is determined by the base downstream of the 'C' of the target CpG. The proportion of methylation can be calculated by comparing the intensities from the two different probes in the same color. (b) Infinium II assay. Each target CpG is interrogated using a single bead type. Methylation state is detected by single base extension at the position of the 'C' of the target CpG, which always results in the addition of a labeled 'G' or 'A' nucleotide, complementary to either the 'methylated' C or 'unmethylated' T, respectively. Each locus is detected in two colors, and methylation status is determined by comparing the two colors from the one position."}
+```{r probeTypeFig, fig.cap="Illumina Infinium HumanMethylation450 assay, reproduced from Maksimovic, Gordon and Oshlack 2012. (a) Infinium I assay. Each individual CpG is interrogated using two bead types: methylated (M) and unmethylated (U). Both bead types will incorporate the same labeled nucleotide for the same target CpG, thereby producing the same color fluorescence. The nucleotide that is added is determined by the base downstream of the 'C' of the target CpG. The proportion of methylation can be calculated by comparing the intensities from the two different probes in the same color. (b) Infinium II assay. Each target CpG is interrogated using a single bead type. Methylation state is detected by single base extension at the position of the 'C' of the target CpG, which always results in the addition of a labeled 'G' or 'A' nucleotide, complementary to either the 'methylated' C or 'unmethylated' T, respectively. Each locus is detected in two colors, and methylation status is determined by comparing the two colors from the one position.", echo=FALSE}
 include_graphics("figure1.png")
 ```
 
@@ -104,13 +104,13 @@ It is useful to begin an analysis in R by loading all the packages that are like
 
 ```{r loadlib_noeval, eval=FALSE, message=FALSE}
 # load packages required for analysis
+library(knitr)
 library(limma)
 library(minfi)
 library(IlluminaHumanMethylation450kanno.ilmn12.hg19)
 library(IlluminaHumanMethylation450kmanifest)
 library(RColorBrewer)
 library(missMethyl)
-#library(matrixStats)
 library(minfiData)
 library(Gviz)
 library(DMRcate)
@@ -221,7 +221,6 @@ densityPlot(getBeta(mSetSq), sampGroups=targets$Sample_Group,
 legend("top", legend = levels(factor(targets$Sample_Group)), 
        text.col=brewer.pal(8,"Dark2"))
 ```
-*Figure 3: The density plots show the distribution of the beta values for each sample before and after normalisation.*
 
 ## Data exploration
 
@@ -239,7 +238,6 @@ plotMDS(getM(mSetSq), top=1000, gene.selection="common",
 legend("top", legend=levels(factor(targets$Sample_Source)), text.col=pal,
        bg="white", cex=0.7)
 ```
-*Figure 4: Multi-dimensional scaling plots are a good way to visualise the relationships between the samples in an experiment.*
 
 Examining the MDS plots for this dataset demonstrates that the largest source of variation is the difference between individuals (Figure 4). The higher dimensions reveal that the differences between cell types are largely captured by the third and fourth principal components (Figure 5). This type of information is useful in that it can inform downstream analysis. If obvious sources of unwanted variation are revealed by the MDS plots, we can include them in our statistical model to account for them. In the case of this particular dataset, we will include individual to individual variation in our statistical model. 
 
@@ -261,7 +259,6 @@ plotMDS(getM(mSetSq), top=1000, gene.selection="common",
 legend("topright", legend=levels(factor(targets$Sample_Group)), text.col=pal,
        cex=0.7, bg="white")
 ```
-*Figure 5: xamining the higher dimensions of an MDS plot can reaveal significant sources of variation in the data.*
 
 ## Filtering
 
@@ -323,7 +320,6 @@ plotMDS(getM(mSetSqFlt), top=1000, gene.selection="common",
 legend("right", legend=levels(factor(targets$Sample_Source)), text.col=pal,
        cex=0.7, bg="white")
 ```
-*Figure 6: Removing SNP-affected CpGs probes from the data changes the sample clustering in the MDS plots.*
 
 ```{r figure7, fig.width=9, fig.height=3, fig.cap="Examining the higher dimensions of the MDS plots shows that significant inter-individual variation still exists in the second and third principal components."}
 par(mfrow=c(1,3))
@@ -343,7 +339,6 @@ plotMDS(getM(mSetSqFlt), top=1000, gene.selection="common",
 legend("right", legend=levels(factor(targets$Sample_Source)), text.col=pal,
        cex=0.7, bg="white")
 ```
-*Figure 7: Examining the higher dimensions of the MDS plots shows that significant inter-individual variation still exists in the second and third principal components.*
 
 The next step is to calculate M-values and beta values (Figure 8). As previously mentioned, M-values have nicer statistical properties and are thus better for use in statistical analysis of methylation data whilst beta values are easy to interpret and are thus better for displaying data. A detailed comparison of M-values and beta values was published by @Du2010.
 ```{r getvals}
@@ -355,7 +350,7 @@ bVals <- getBeta(mSetSqFlt)
 head(bVals[,1:5])
 ```
 
-```{r figure8, fig.width=10,fig.height=5, fig.cap="The distributions of beta and M-values are quite different; beta values are constrained between 0 and 1 whilst M-values range between -Inf and Inf."}
+```{r figure8, fig.width=10,fig.height=5, fig.cap="The distributions of beta and M-values are quite different. Beta values are constrained between 0 and 1 whilst M-values range between -Inf and Inf."}
 par(mfrow=c(1,2))
 densityPlot(bVals, sampGroups=targets$Sample_Group, main="Beta values", 
             legend=FALSE, xlab="Beta values")
@@ -366,7 +361,6 @@ densityPlot(mVals, sampGroups=targets$Sample_Group, main="M-values",
 legend("topleft", legend = levels(factor(targets$Sample_Group)), 
        text.col=brewer.pal(8,"Dark2"))
 ```
-*Figure 8: The distributions of beta and M-values are quite different; beta values are constrained between 0 and 1 whilst M-values range between -Inf and Inf.*
 
 ## Probe-wise differential methylation analysis
 
@@ -431,7 +425,6 @@ sapply(rownames(DMPs)[1:4], function(cpg){
   plotCpg(bVals, cpg=cpg, pheno=targets$Sample_Group, ylab = "Beta values")
 })
 ```
-*Figure 9: Plotting the top few differentially methylated CpGs is a good way to check whether the results make sense.*
 
 ## Differential methylation analysis of regions
 
@@ -468,14 +461,13 @@ cols <- groups[as.character(factor(targets$Sample_Group))]
 samps <- 1:nrow(targets)
 ```
 
-```{r figure10, fig.width=10, fig.height=10, fig.cap="The DMRcate \"DMR.plot\" function allows you to quickly visualise DMRs in their genomic context. By default, the plot shows the location of the DMR in the genome, the position of any genes that are nearby, the base pair positions of the CpG probes, the methylation levels of the individual samples as a heatmap and the mean methylation levels for the various sample groups in the experiment. This plot shows the top ranked DMR identified by the DMRcate analysis."}
+```{r figure10, fig.width=10, fig.height=10, fig.cap="DMRcate allows you to quickly visualise DMRs in their genomic context. By default, the plot shows the location of the DMR in the genome, the position of any genes that are nearby, the base pair positions of the CpG probes, the methylation levels of the individual samples as a heatmap and the mean methylation levels for the various sample groups in the experiment. This plot shows the top ranked DMR identified by the DMRcate analysis."}
 # draw the plot for the top DMR
 par(mfrow=c(1,1))
 DMR.plot(ranges=results.ranges, dmr=1, CpGs=bVals, phen.col=cols, what = "Beta",
          arraytype = "450K", pch=16, toscale=TRUE, plotmedians=TRUE, 
          genome="hg19", samps=samps)
 ```
-*Figure 10: The DMRcate `DMR.plot` function allows you to quickly visualise DMRs in their genomic context. By default, the plot shows the location of the DMR in the genome, the position of any genes that are nearby, the base pair positions of the CpG probes, the methylation levels of the individual samples as a heatmap and the mean methylation levels for the various sample groups in the experiment. This plot shows the top ranked DMR identified by the DMRcate analysis.*
 
 ## Customising visualisations of methylation data
 
@@ -583,8 +575,6 @@ sizes <- c(2,2,5,2,2,2,3) # set up the relative sizes of the tracks
 plotTracks(tracks, from=minbase, to=maxbase, showTitle=TRUE, add53=TRUE, 
            add35=TRUE, grid=TRUE, lty.grid=3, sizes=sizes, length(tracks))
 ```
-![Figure15: The Gviz package provides extensive functionality for customising plots of genomic regions. This plot shows the top ranked DMR identified by the DMRcate analysis.](figure11.png)
-*Figure 11: The Gviz package provides extensive functionality for customising plots of genomic regions. This plot shows the top ranked DMR identified by the DMRcate analysis.*
 
 # Additional analyses
 
@@ -613,7 +603,6 @@ The `gometh` function takes into account the varying numbers of CpGs associated 
 par(mfrow=c(1,1))
 gst <- gometh(sig.cpg=sigCpGs, all.cpg=all, plot.bias=TRUE)
 ```
-*Figure 12: Bias resulting from different numbers of CpG probes in different genes.*
 
 The `gst` object is a `data.frame` with each row corresponding to the GO category being tested. Note that the warning regarding multiple symbols will always be displayed as there are genes that have more than one alias, however it is not a cause for concern. 
 
@@ -707,7 +696,6 @@ legend("top", legend=levels(factor(age.targets$Sample_Group)),
 # remove sex chromosome probes from data
 age.mSetSqFlt <- age.mSetSqFlt[keep,]
 ```
-*Figure 13: When samples from both males and females are included in a study, sex is usually the largest source of variation in methylation data.*
 
 We can test for differentially variable CpGs using the `varFit` function in the *missMethyl* package. The syntax for specifying which groups we are interested in testing is slightly different to the standard way a model is specified in `limma`, particularly for designs where an intercept is fitted (see *missMethyl* [vignette](https://www.bioconductor.org/packages/release/bioc/vignettes/missMethyl/inst/doc/missMethyl.pdf) for further details). For the ageing data, the design matrix includes an intercept term, and a term for age. The `coef` argument in the `varFit` function indicates which columns of the design matrix correspond to the intercept and grouping factor. Thus, for the ageing dataset we set `coef=c(1,2)`. Note that design matrices without intercept terms are permitted, with specific contrasts tested using the `contrasts.varFit` function.
 
@@ -741,7 +729,6 @@ sapply(rownames(topDV)[1:4], function(cpg){
           ylab = "Beta values")
 })
 ```
-*Figure 14: As for DMPs, it is useful to plot the top few differentially variable CpGs to check that the results make sense.*
 
 An example of testing for differential variability when the design matrix does not have an intercept term is detailed in the *missMethyl* [vignette]("http://www.bioconductor.org/packages/release/bioc/vignettes/missMethyl/inst/doc/missMethyl.pdf").
 
@@ -771,7 +758,7 @@ pData(age.rgSet)$Slide <- as.numeric(pData(age.rgSet)$Slide)
 cellCounts <- estimateCellCounts(age.rgSet)
 ```
 
-```{r figure15, fig.width=5,fig.height=5, cache=TRUE, fig.cap="If samples come from a population of mixed cells e.g. blood, it is advisable to check for potential confounding between differences in cell type proportions and the factor of interest.", eval=FALSE}
+```{r cellcountsfigcode, eval=FALSE, cache=TRUE}
 # plot cell type proportions by age
 par(mfrow=c(1,1))
 a = cellCounts[age.targets$Sample_Group == "NewBorns",]
@@ -782,8 +769,10 @@ boxplot(b, at=0:5*3 + 2, xaxt="n", add=TRUE, col=age.pal[2])
 axis(1, at=0:5*3 + 1.5, labels=colnames(a), tick=TRUE)
 legend("topleft", legend=c("NewBorns","OLD"), fill=age.pal)
 ```
-![Figure15: If samples come from a population of mixed cells e.g. blood, it is advisable to check for potential confounding between differences in cell type proportions and the factor of interest.](figure15.png)
-*Figure 15: If samples come from a population of mixed cells e.g. blood, it is advisable to check for potential confounding between differences in cell type proportions and the factor of interest.*
+
+```{r figure15, fig.width=5,fig.height=5, fig.cap="Cell type composition estimation. If samples come from a population of mixed cells such as blood, it is advisable to check for potential confounding between differences in cell type proportions and the factor of interest.", echo=FALSE}
+include_graphics("figure15.png")
+```
 
 As reported by @Jaffe2014, the preceding plot demonstrates that differences in blood cell type proportions are strongly confounded with age in this dataset (Figure 15). Performing cell composition estimation can alert you to potential issues with confounding when analysing a mixed cell type dataset. Based on the results, some type of adjustment for cell type composition may be considered, although a naive cell type adjustment is not recommended. @Jaffe2014 outline several strategies for dealing with cell type composition issues. 
 
