@@ -770,7 +770,7 @@ axis(1, at=0:5*3 + 1.5, labels=colnames(a), tick=TRUE)
 legend("topleft", legend=c("NewBorns","OLD"), fill=age.pal)
 ```
 
-```{r figure15, fig.width=5,fig.height=5, fig.cap="Cell type composition estimation. If samples come from a population of mixed cells such as blood, it is advisable to check for potential confounding between differences in cell type proportions and the factor of interest.", echo=FALSE}
+```{r figure15, fig.cap="Cell type composition estimation. If samples come from a population of mixed cells such as blood, it is advisable to check for potential confounding between differences in cell type proportions and the factor of interest.", echo=FALSE}
 include_graphics("figure15.png")
 ```
 
