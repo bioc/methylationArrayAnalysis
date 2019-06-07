@@ -121,7 +121,7 @@ The *minfi*, *IlluminaHumanMethylation450kanno.ilmn12.hg19*, *IlluminaHumanMethy
 
 ```{r annotations, cache=TRUE}
 # get the 450k annotation data
-ann450k = getAnnotation(IlluminaHumanMethylation450kanno.ilmn12.hg19)
+ann450k <- getAnnotation(IlluminaHumanMethylation450kanno.ilmn12.hg19)
 head(ann450k)
 ```
 
@@ -606,11 +606,11 @@ gst <- gometh(sig.cpg=sigCpGs, all.cpg=all, plot.bias=TRUE)
 
 The `gst` object is a `data.frame` with each row corresponding to the GO category being tested. Note that the warning regarding multiple symbols will always be displayed as there are genes that have more than one alias, however it is not a cause for concern. 
 
-The top 20 gene ontology categories can be displayed using the `topGO` function. For KEGG pathway analysis, the `topKEGG` function can be called to display the top 20 enriched pathways.
+The top 20 gene ontology categories can be displayed using the `topGSA` function. For KEGG pathway analysis, the `topGSA` function will also display the top 20 enriched pathways.
 
 ```{r topgo}
 # Top 10 GO categories
-topGO(gst, number=10)
+topGSA(gst, number=10)
 ```
 
 From the output we can see many of the top GO categories correspond to immune system and T cell processes, which is unsurprising as the cell types being studied form part of the immune system. Typically, we consider GO categories that have associated false discovery rates of less than 5\% to be statistically significant. If there aren't any categories that achieve this significance it may be useful to scan the top 5 or 10 highly ranked GO categories to gain some insight into the biological system.
