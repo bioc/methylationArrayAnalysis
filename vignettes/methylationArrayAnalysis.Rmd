@@ -445,28 +445,23 @@ Once we have the relevant statistics for the individual CpGs, we can then use th
 ```{r dmrcate, message=FALSE}
 #endif /* NEWSTUFF */
 DMRs <- dmrcate(myAnnotation, lambda=1000, C=2)
-head(DMRs$results)
+results.ranges <- extractRanges(DMRs)
+results.ranges
 ```
 
 As for the probe-wise analysis, it is advisable to visualise the results to ensure that they make sense. The regions can easily be viewed using the `DMR.plot` function provided in the *DMRcate* package (Figure 10).
 ```{r resultsranges}
-# convert the regions to annotated genomic ranges
-data(dmrcatedata)
-results.ranges <- extractRanges(DMRs, genome = "hg19")
-
 # set up the grouping variables and colours
 groups <- pal[1:length(unique(targets$Sample_Group))]
 names(groups) <- levels(factor(targets$Sample_Group))
 cols <- groups[as.character(factor(targets$Sample_Group))]
-samps <- 1:nrow(targets)
 ```
 
-```{r figure10, fig.width=10, fig.height=10, fig.cap="DMRcate allows you to quickly visualise DMRs in their genomic context. By default, the plot shows the location of the DMR in the genome, the position of any genes that are nearby, the base pair positions of the CpG probes, the methylation levels of the individual samples as a heatmap and the mean methylation levels for the various sample groups in the experiment. This plot shows the top ranked DMR identified by the DMRcate analysis."}
+```{r figure10, fig.width=10, fig.height=10, fig.cap="DMRcate allows you to quickly visualise DMRs in their genomic context. By default, the plot shows the location of the DMR in the genome, the position of any genes that are nearby, the base pair positions of the CpG probes, the methylation levels of the individual samples as a heatmap and the mean methylation levels for the various sample groups in the experiment. This plot shows one of the DMRs identified by the DMRcate analysis."}
 # draw the plot for the top DMR
 par(mfrow=c(1,1))
-DMR.plot(ranges=results.ranges, dmr=1, CpGs=bVals, phen.col=cols, what = "Beta",
-         arraytype = "450K", pch=16, toscale=TRUE, plotmedians=TRUE, 
-         genome="hg19", samps=samps)
+DMR.plot(ranges = results.ranges, dmr = 2, CpGs = bVals, phen.col = cols, 
+         what = "Beta", arraytype = "450K", genome = "hg19")
 ```
 
 ## Customising visualisations of methylation data
@@ -481,10 +476,9 @@ gen <- "hg19"
 # the index of the DMR that we will plot 
 dmrIndex <- 1
 # extract chromosome number and location from DMR results 
-coords <- strsplit2(DMRs$results$coord[dmrIndex],":")
-chrom <- coords[1]
-start <- as.numeric(strsplit2(coords[2],"-")[1])
-end <- as.numeric(strsplit2(coords[2],"-")[2])
+chrom <- as.character(seqnames(results.ranges[dmrIndex]))
+start <- as.numeric(start(results.ranges[dmrIndex]))
+end <- as.numeric(end(results.ranges[dmrIndex]))
 # add 25% extra space to plot
 minbase <- start - (0.25*(end-start))
 maxbase <- end + (0.25*(end-start))
@@ -568,12 +562,12 @@ dmrTrack <- AnnotationTrack(start=start, end=end, genome=gen, name="DMR",
 
 Set up the track list and indicate the relative sizes of the different tracks. Finally, draw the plot using the `plotTracks` function (Figure 11).
 
-```{r figure11, fig.width=10, fig.height=6, fig.cap="The Gviz package provides extensive functionality for customising plots of genomic regions. This plot shows the top ranked DMR identified by the DMRcate analysis.", eval=TRUE}
+```{r figure11, fig.width=10, fig.height=8, fig.cap="The Gviz package provides extensive functionality for customising plots of genomic regions. This plot shows one of the DMRs identified by the DMRcate analysis.", eval=TRUE}
 tracks <- list(iTrack, gTrack, methTrack, dmrTrack, islandTrack, dnaseTrack,
                rTrack)
 sizes <- c(2,2,5,2,2,2,3) # set up the relative sizes of the tracks
 plotTracks(tracks, from=minbase, to=maxbase, showTitle=TRUE, add53=TRUE, 
-           add35=TRUE, grid=TRUE, lty.grid=3, sizes=sizes, length(tracks))
+           add35=TRUE, grid=TRUE, lty.grid=3, sizes = sizes, length(tracks))
 ```
 
 # Additional analyses
