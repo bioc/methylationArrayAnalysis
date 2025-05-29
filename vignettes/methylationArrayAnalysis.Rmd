@@ -567,7 +567,7 @@ tracks <- list(iTrack, gTrack, methTrack, dmrTrack, islandTrack, dnaseTrack,
                rTrack)
 sizes <- c(2,2,5,2,2,2,3) # set up the relative sizes of the tracks
 plotTracks(tracks, from=minbase, to=maxbase, showTitle=TRUE, add53=TRUE, 
-           add35=TRUE, grid=TRUE, lty.grid=3, sizes = sizes, length(tracks))
+           add35=TRUE, lty.grid=3, sizes = sizes, length(tracks))
 ```
 
 # Additional analyses
