@@ -510,8 +510,11 @@ dnaseData <- GRanges(seqnames=dnase[,1],
 dnaseData
 ```
 
-Now, set up the ideogram, genome and RefSeq tracks that will provide context for our methylation data. 
-```{r gentracks, eval=TRUE}
+Now, set up the ideogram, genome and RefSeq tracks that will provide context for our methylation data.
+
+Genomic annotation tracks such as RefSeq genes can be retrieved dynamically from the UCSC Genome Browser using `Gviz::UcscTrack()`. Because this requires internet access and external resources, the following code is shown for illustration only and is not evaluated during package build.
+
+```{r gentracks, eval=FALSE}
 iTrack <- IdeogramTrack(genome = gen, chromosome = chrom, name="")
 gTrack <- GenomeAxisTrack(col="black", cex=1, name="", fontcolor="black")
 rTrack <- UcscTrack(genome=gen, chromosome=chrom, track="NCBI RefSeq", 
@@ -562,12 +565,16 @@ dmrTrack <- AnnotationTrack(start=start, end=end, genome=gen, name="DMR",
 
 Set up the track list and indicate the relative sizes of the different tracks. Finally, draw the plot using the `plotTracks` function (Figure 11).
 
-```{r figure11, fig.width=10, fig.height=8, fig.cap="The Gviz package provides extensive functionality for customising plots of genomic regions. This plot shows one of the DMRs identified by the DMRcate analysis.", eval=TRUE}
+```{r figure11-code, eval=FALSE}
 tracks <- list(iTrack, gTrack, methTrack, dmrTrack, islandTrack, dnaseTrack,
                rTrack)
 sizes <- c(2,2,5,2,2,2,3) # set up the relative sizes of the tracks
 plotTracks(tracks, from=minbase, to=maxbase, showTitle=TRUE, add53=TRUE, 
            add35=TRUE, lty.grid=3, sizes = sizes, length(tracks))
+```
+
+```{r figure11, fig.width=10, fig.height=8, fig.cap="The Gviz package provides extensive functionality for customising plots of genomic regions. This plot shows one of the DMRs identified by the DMRcate analysis.", echo=FALSE}
+include_graphics("figure11.png")
 ```
 
 # Additional analyses
