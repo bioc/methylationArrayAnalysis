@@ -1,8 +1,8 @@
 Package: methylationArrayAnalysis
 Title: A cross-package Bioconductor workflow for analysing methylation array data
-Version: 1.35.0
+Version: 1.35.1
 Authors@R: person(role=c("aut", "cre"), "Jovana Maksimovic",
-        "Maintainer", email = "jovana.maksimovic@mcri.edu.au")
+        "Maintainer", email = "jovana.maksimovic@petermac.org")
 Description: Methylation in the human genome is known to be associated with 
         development and disease. The Illumina Infinium methylation arrays are by far 
         the most common way to interrogate methylation across the human genome. This 
@@ -35,4 +35,5 @@ VignetteBuilder: knitr
 biocViews: Workflow, EpigeneticsWorkflow
 NeedsCompilation: no
 Author: Jovana Maksimovic [aut, cre]
-Maintainer: Jovana Maksimovic <jovana.maksimovic@mcri.edu.au>
+Maintainer: Jovana Maksimovic <jovana.maksimovic@petermac.org>
+RoxygenNote: 7.3.3
