@@ -443,7 +443,6 @@ str(myAnnotation)
 Once we have the relevant statistics for the individual CpGs, we can then use the `dmrcate` function to combine them to identify differentially methylated regions. The main output table `DMRs$results` contains all of the regions found, along with their genomic annotations and p-values.
 
 ```{r dmrcate, message=FALSE}
-#endif /* NEWSTUFF */
 DMRs <- dmrcate(myAnnotation, lambda=1000, C=2)
 results.ranges <- extractRanges(DMRs)
 results.ranges
@@ -460,7 +459,7 @@ cols <- groups[as.character(factor(targets$Sample_Group))]
 ```{r figure10, fig.width=10, fig.height=10, fig.cap="DMRcate allows you to quickly visualise DMRs in their genomic context. By default, the plot shows the location of the DMR in the genome, the position of any genes that are nearby, the base pair positions of the CpG probes, the methylation levels of the individual samples as a heatmap and the mean methylation levels for the various sample groups in the experiment. This plot shows one of the DMRs identified by the DMRcate analysis."}
 # draw the plot for the top DMR
 par(mfrow=c(1,1))
-DMR.plot(ranges = results.ranges, dmr = 2, CpGs = bVals, phen.col = cols, 
+DMR.plot(ranges = results.ranges, dmr = 1, CpGs = bVals, phen.col = cols, 
          what = "Beta", arraytype = "450K", genome = "hg19")
 ```
 
@@ -474,7 +473,7 @@ We will first set up the genomic region we would like to plot by extracting the 
 # indicate which genome is being used
 gen <- "hg19"
 # the index of the DMR that we will plot 
-dmrIndex <- 1
+dmrIndex <- 2
 # extract chromosome number and location from DMR results 
 chrom <- as.character(seqnames(results.ranges[dmrIndex]))
 start <- as.numeric(start(results.ranges[dmrIndex]))
@@ -488,41 +487,42 @@ Next, we will add some genomic annotations of interest such as the locations of 
 
 ```{r extrafeatures}
 # CpG islands
-islandHMM <- read.csv(paste0(dataDirectory,
-                             "/model-based-cpg-islands-hg19-chr17.txt"),
-                      sep="\t", stringsAsFactors=FALSE, header=FALSE)
-head(islandHMM)
+# get annotation hub data
+ah <- AnnotationHub::AnnotationHub()
 
-islandData <- GRanges(seqnames=Rle(islandHMM[,1]), 
-                      ranges=IRanges(start=islandHMM[,2], end=islandHMM[,3]),
-                      strand=Rle(strand(rep("*",nrow(islandHMM)))))
+# get CpG islands for hg19
+islandData <- ah[["AH5086"]]
 islandData
 
-# DNAseI hypersensitive sites
-dnase <- read.csv(paste0(dataDirectory,"/wgEncodeRegDnaseClusteredV3chr17.bed"),
-                  sep="\t",stringsAsFactors=FALSE,header=FALSE)
-head(dnase)
-
-dnaseData <- GRanges(seqnames=dnase[,1],
-                     ranges=IRanges(start=dnase[,2], end=dnase[,3]),
-                     strand=Rle(rep("*",nrow(dnase))),
-                     data=dnase[,5])
+# get DNAseI hypersensitive sites hg19 adult CD4 T cells
+dnaseData <- ah[["AH25493"]]
 dnaseData
 ```
 
 Now, set up the ideogram, genome and RefSeq tracks that will provide context for our methylation data.
 
-Genomic annotation tracks such as RefSeq genes can be retrieved dynamically from the UCSC Genome Browser using `Gviz::UcscTrack()`. Because this requires internet access and external resources, the following code is shown for illustration only and is not evaluated during package build.
+```{r}
+# get hg19 refseq data
+refseq <- ah[["AH5040"]]
 
-```{r gentracks, eval=FALSE}
-iTrack <- IdeogramTrack(genome = gen, chromosome = chrom, name="")
-gTrack <- GenomeAxisTrack(col="black", cex=1, name="", fontcolor="black")
-rTrack <- UcscTrack(genome=gen, chromosome=chrom, track="NCBI RefSeq", 
-                    from=minbase, to=maxbase, trackType="GeneRegionTrack", 
-                    rstarts="exonStarts", rends="exonEnds", gene="name", 
-                    symbol="name2", transcript="name", strand="strand", 
-                    fill="darkblue",stacking="squish", name="RefSeq", 
-                    showId=TRUE, geneSymbol=TRUE)
+## Existing objects
+iTrack <- IdeogramTrack(genome = gen, chromosome = chrom, name = "")
+gTrack <- GenomeAxisTrack(col = "black", cex = 1,
+                          name = "", fontcolor = "black")
+
+## Construct GeneRegionTrack
+rTrack <- GeneRegionTrack(
+  refseq,
+  start = minbase,
+  end = maxbase,
+  genome = gen,
+  chromosome = chrom,
+  name = "RefSeq",
+  showId = TRUE,
+  geneSymbol = TRUE,
+  stacking = "squish",
+  fill = "darkblue"
+)
 ```
 
 Ensure that the methylation data is ordered by chromosome and base position.
@@ -565,7 +565,7 @@ dmrTrack <- AnnotationTrack(start=start, end=end, genome=gen, name="DMR",
 
 Set up the track list and indicate the relative sizes of the different tracks. Finally, draw the plot using the `plotTracks` function (Figure 11).
 
-```{r figure11-code, eval=FALSE}
+```{r figure11-code, eval=TRUE}
 tracks <- list(iTrack, gTrack, methTrack, dmrTrack, islandTrack, dnaseTrack,
                rTrack)
 sizes <- c(2,2,5,2,2,2,3) # set up the relative sizes of the tracks
@@ -573,9 +573,9 @@ plotTracks(tracks, from=minbase, to=maxbase, showTitle=TRUE, add53=TRUE,
            add35=TRUE, lty.grid=3, sizes = sizes, length(tracks))
 ```
 
-```{r figure11, fig.width=10, fig.height=8, fig.cap="The Gviz package provides extensive functionality for customising plots of genomic regions. This plot shows one of the DMRs identified by the DMRcate analysis.", echo=FALSE}
-include_graphics("figure11.png")
-```
+<!-- ```{r figure11, fig.width=10, fig.height=8, fig.cap="The Gviz package provides extensive functionality for customising plots of genomic regions. This plot shows one of the DMRs identified by the DMRcate analysis.", echo=FALSE} -->
+<!-- include_graphics("figure11.png") -->
+<!-- ``` -->
 
 # Additional analyses
 
