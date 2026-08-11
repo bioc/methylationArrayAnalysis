@@ -82,10 +82,14 @@ The data required for this workflow can be downloaded from [Zenodo](https://zeno
 ```{r datadir}
 # set up a path to the data directory
 <<<<<<< HEAD
+<<<<<<< HEAD
 dataDirectory <- "your/path/to/data"
 =======
 dataDirectory <- "path/to/where/data/is"
 >>>>>>> 45dd2ca (Move package data to Zenodo and update vignette accordingly)
+=======
+dataDirectory <- "your/path/to/data"
+>>>>>>> f0db148 (Update vignette data directory path)
 
 # list the files
 list.files(dataDirectory, recursive = TRUE)
