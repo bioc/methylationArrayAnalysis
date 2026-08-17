@@ -2,7 +2,7 @@
 title: "A cross-package Bioconductor workflow for analysing methylation array data"
 author: 
   - name: Jovana Maksimovic
-    email: jovana.maksimovic@mcri.edu.au
+    email: Jovana.Maksimovic@petermac.org
   - name: Belinda Phipson 
   - name: Alicia Oshlack
 date: "`r BiocStyle::doc_date()`"
@@ -77,13 +77,12 @@ In this workflow, we will provide examples of the steps involved in analysing me
 
 ## Obtaining the data
 
-The data required for this workflow has been bundled with the R package that contains this workflow document.  Alternatively, it can be obtained from [figshare](https://figshare.com/s/7a37f43c0ca2fec4669e). If you choose to download it seperately, once the data has been downloaded, it needs to be extracted from the archive. This will create a folder called `data`, which contains all the files necessary to execute the workflow.
-
-Once the data has been downloaded and extracted, there should be a folder called `data` that contains all the files necessary to execute the workflow.
+The data required for this workflow can be downloaded from [Zenodo](https://zenodo.org/records/21881322). Once the data has been downloaded, it needs to be extracted from the archive. This will create a folder called `data`, which contains all the files necessary to execute the workflow. Move this folder to wherever you like, and then note its path in the chunk below.
 
 ```{r datadir}
 # set up a path to the data directory
-dataDirectory <- system.file("extdata", package = "methylationArrayAnalysis")
+dataDirectory <- "path/to/where/data/is"
+
 # list the files
 list.files(dataDirectory, recursive = TRUE)
 ```
