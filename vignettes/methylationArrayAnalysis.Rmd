@@ -81,7 +81,7 @@ The data required for this workflow can be downloaded from [Zenodo](https://zeno
 
 ```{r datadir}
 # set up a path to the data directory
-dataDirectory <- "path/to/where/data/is"
+dataDirectory <- "your/path/to/data"
 
 # list the files
 list.files(dataDirectory, recursive = TRUE)
